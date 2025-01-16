@@ -117,4 +117,5 @@ php artisan module:seed Shipments
 ### Developer tools
 
 Just [Ray from spatie](https://spatie.be/products/ray)
+
 2 module generators from 'mhmiton/laravel-modules-livewire' and 'nwidart/laravel-modules'.
