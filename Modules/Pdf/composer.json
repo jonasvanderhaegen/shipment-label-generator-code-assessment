@@ -1,0 +1,30 @@
+{
+    "name": "skylence/pdf",
+    "description": "",
+    "authors": [
+        {
+            "name": "Jonas Vanderhaegen",
+            "email": "jonasvanderhaegen@hotmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Pdf\\": "app/",
+            "Modules\\Pdf\\Database\\Factories\\": "database/factories/",
+            "Modules\\Pdf\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Pdf\\Tests\\": "tests/"
+        }
+    }
+}
