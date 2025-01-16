@@ -3,6 +3,10 @@
 
 <p><img width="100%" src="/examples/screenshots/1. standard.png" alt="Livewire Logo"></p>
 
+[Pdf outputs](/examples/pdfs)
+
+[Screenshots](/examples/screenshots)
+
 This was quite a fun code assessment to do, I enjoyed programming this mostly with Laravel and Livewire. 
 
 The only thing that bothered me is that the full page components update the whole page with very action, it detaches flowbite's javascript, which is why I've to remove Flowbite's html properties and replace with livewire variables and php logic so it persists when doing click actions that update the components. For example the accordeon was with javascript, but everytime I start to type in a field it updates the whole modal component and resets the DOM elements to its original start and detach Flowbite javascript, it doesn't anything anymore after.
