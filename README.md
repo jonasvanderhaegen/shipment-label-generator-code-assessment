@@ -36,7 +36,7 @@ For combining the label and order information I initially thought to resize the 
 
 1. (wire:)click on green button will open the livewire component modal, it has a form for order/billing/delivery/delivery method dropdown, the livewire form component validates the fields live with a debounce.
 
-2. By default all panels are closed and disabled except for order information, when all fields of a certain section are valid, the next panel is no longer disabled and the user can continue
+2. By default all panels are closed and disabled except for order information, when all fields of a certain section are valid, the next panel is no longer disabled and the user can continue. this is due to computed properties. Pretty handy!
 
 3. The user submits a form, this creates the model Shipment with the all form fields values.
 
