@@ -3,9 +3,7 @@
 
 <p><img width="100%" src="/examples/screenshots/1. standard.png" alt="Livewire Logo"></p>
 
-[Pdf outputs](/examples/pdfs)
-
-[Screenshots](/examples/screenshots)
+[Pdf outputs](/examples/pdfs) | [Screenshots](/examples/screenshots)
 
 This was quite a fun code assessment to do, I enjoyed programming this mostly with Laravel and Livewire. 
 
