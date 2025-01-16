@@ -47,6 +47,17 @@ For combining the label and order information I initially thought to resize the 
     4. GeneratePdf = generate a pdf file in A5 format portrait with spatie/laravel-ray, it converts blade php file to pdf file. This is the left side.
     5. ConcatenatePdfs = Make a new A4 format pdf file, put the left side on it first, then the right side and save the file in storage.
     6. CleanUpTemporaryFiles = Delete the temporary files.
+
+I added a artisan console command to view the outcome of the pipeline without having to use the form over and over again.
+This will do the same as what happens on form submit except for FetchShipmentData right now.
+
+ t g p p, short for TestGeneratePdfPipeline
+
+```bash
+pdf:tgpp <shipment ID>
+```
+
+
   
 #### Delete shipment
 
