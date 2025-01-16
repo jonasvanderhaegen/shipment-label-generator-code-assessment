@@ -38,7 +38,7 @@ For combining the label and order information I initially thought to resize the 
 
 3. The user submits a form, this creates the model Shipment with the all form fields values.
 
-4. This fires a created observer event, the dedicated listener then starts a pipeline of classes. I will eventually replace it with queues but this will do.
+4. This fires a created (observer) event, the dedicated listener then starts a pipeline of classes. I will eventually replace it with queues but this will do.
 
 5. Pipeline
     1. FetchShipmentData = send POST request to api endpoint to create a shipment, store the data that returns in shipment, useful for the next pipe.
@@ -52,7 +52,7 @@ For combining the label and order information I initially thought to resize the 
 
 1. The user deletes a shipment after confirm prompt from the client browser.
 
-2. This fires a deleted event, the listener deletes the relevant file from storage.
+2. This fires a deleted (observer) event, the listener deletes the relevant file from storage.
 
 3. In the delete function call the function resetPage so the paginator resets to page 1. In case there's 1 shipment left on this page and the shipment dissapears the url otherwise stays at current page with zero shipments. Therefore the page must be reset. Technicall I could just let it redirect to the page before of the paginator.
 
