@@ -14,7 +14,7 @@ For combining the label and order information I initially thought to resize the 
 
 ## Known problems
 
-- Selecting Belgium as delivery country and submitting throws guaranteed error (not sure why yet);
+- Select Belgium as delivery country and submit throws guaranteed error (not sure why yet);
 - Submitting modal form currently shows no indication of loading/processing until it's finished;
 
 ## Work in progress
