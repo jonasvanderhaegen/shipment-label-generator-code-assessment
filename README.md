@@ -3,7 +3,33 @@
 
 <p><img width="100%" src="/examples/screenshots/1. standard.png" alt="Livewire Logo"></p>
 
-Installation & Configuration
+This was quite a fun code assessment to do, I enjoyed programming this mostly with Laravel and Livewire. 
+
+The only thing that bothered me is that the full page components update the whole page with very action so it detaches flowbite's javascript so I've to remove Flowbite's html properties and replace with livewire variables and php logic so it persists when doing action. Like let's say the accordeon was with javascript, but everytime I start to type in a field it updates the component and detach resets the html to original and detached Flowbite javascript so it doesn't anything anymore.
+
+For combining the label and order information I initially thought to resize the api's pdf label to A5, then generate another PDF in portrait in A5 format. Then concatenate them next to each other. 2 A5's in portrait make 1 A4 in landscape mode.
+
+
+## Known problems
+
+- Selecting Belgium as delivery country and submitting throws guaranteed error (not sure why yet);
+- Submitting modal form currently shows no indication of loading/processing until it's finished;
+
+## Work in progress
+
+- Write pest tests;
+- Deal with errors from api more gracefully;
+- Add more meaningful typing;
+- Refactor code in several livewire components;
+- Check coding style (rector);
+- Filter index of shipments based on searchform component's query parameter;
+- After submitting modal form, show progression in vertical steps. After each pipeline finished have it go down a step;
+- Create meaningful blade components to reduce repeating (lot of css classes on html elements) more gracefully;
+- Add more meaningful logs and comments to the code;
+- Make use of Laravel reverb websocket for small real-time updates;
+
+
+# Installation & Configuration
 
 #### Step 1
 
