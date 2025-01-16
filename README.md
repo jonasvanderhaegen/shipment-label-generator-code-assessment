@@ -5,7 +5,7 @@
 
 This was quite a fun code assessment to do, I enjoyed programming this mostly with Laravel and Livewire. 
 
-The only thing that bothered me is that the full page components update the whole page with very action so it detaches flowbite's javascript so I've to remove Flowbite's html properties and replace with livewire variables and php logic so it persists when doing action. Like let's say the accordeon was with javascript, but everytime I start to type in a field it updates the component and detach resets the html to original and detached Flowbite javascript so it doesn't anything anymore.
+The only thing that bothered me is that the full page components update the whole page with very action, it detaches flowbite's javascript, which is why I've to remove Flowbite's html properties and replace with livewire variables and php logic so it persists when doing click actions that update the components. For example the accordeon was with javascript, but everytime I start to type in a field it updates the whole modal component and resets the DOM elements to its original start and detach Flowbite javascript, it doesn't anything anymore after.
 
 For combining the label and order information I initially thought to resize the api's pdf label to A5, then generate another PDF in portrait in A5 format. Then concatenate them next to each other. 2 A5's in portrait make 1 A4 in landscape mode.
 
