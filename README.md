@@ -28,6 +28,34 @@ For combining the label and order information I initially thought to resize the 
 - Add more meaningful logs and comments to the code;
 - Make use of Laravel reverb websocket for small real-time updates;
 
+## Workflow
+
+#### Create shipment
+
+1. (wire:)click on green button will open the livewire component modal, it has a form for order/billing/delivery/delivery method dropdown, the livewire form component validates the fields live with a debounce.
+
+2. By default all panels are closed and disabled except for order information, when all fields of a certain section are valid, the next panel is no longer disabled and the user can continue
+
+3. The user submits a form, this creates the model Shipment with the all form fields values.
+
+4. This fires a created observer event, the dedicated listener then starts a pipeline of classes. I will eventually replace it with queues but this will do.
+
+5. Pipeline
+    1. FetchShipmentData = send POST request to api endpoint to create a shipment, store the data that returns in shipment, useful for the next pipe.
+    2. FetchShippingLabel = send GET request to api endpoint to retrieve base64 string, then continue to next pipe.
+    3. StoreTemporaryPdf = convert the base64 string as temporary file, resize it to A5. this is for the right side of the eventual pdf file.
+    4. GeneratePdf = generate a pdf file in A5 format portrait with spatie/laravel-ray, it converts blade php file to pdf file. This is the left side.
+    5. ConcatenatePdfs = Make a new A4 format pdf file, put the left side on it first, then the right side and save the file in storage.
+    6. CleanUpTemporaryFiles = Delete the temporary files.
+  
+#### Delete shipment
+
+1. The user deletes a shipment after confirm prompt from the client browser.
+
+2. This fires a deleted event, the listener deletes the relevant file from storage.
+
+3. In the delete function call the function resetPage so the paginator resets to page 1. In case there's 1 shipment left on this page and the shipment dissapears the url otherwise stays at current page with zero shipments. Therefore the page must be reset. Technicall I could just let it redirect to the page before of the paginator.
+
 
 # Installation & Configuration
 
