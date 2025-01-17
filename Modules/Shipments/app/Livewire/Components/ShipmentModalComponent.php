@@ -77,7 +77,6 @@ class ShipmentModalComponent extends Component
     public function mount()
     {
         $this->countries = [
-            'Belgium' => 'BE',
             'Netherlands' => 'NL',
         ];
 
