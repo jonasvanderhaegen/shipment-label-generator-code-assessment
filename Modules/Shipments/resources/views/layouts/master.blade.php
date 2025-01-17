@@ -16,7 +16,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    @vite(['Modules/Shipments/resources/assets/sass/app.scss', 'Modules/Shipments/resources/assets/js/app.js'])
+    @vite(\Nwidart\Modules\Module::getAssets())
+
 
     @livewireStyles
 </head>
