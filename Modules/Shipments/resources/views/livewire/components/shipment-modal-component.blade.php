@@ -346,7 +346,7 @@
                     </div>
 
                     <div class="flex items-center py-4 px-4 space-x-4 sm:px-5" wire:loading.delay.long.class="opacity-20">
-                        <button @disabled(!$form->isOrderInfoValid() && !$form->isBillingValid() && !$form->isDeliveryValid()) wire:loading.delay.long.attr="disabled"
+                        <button @if($form->isOrderInfoValid() && $form->isBillingValid() && $form->isDeliveryValid()) type="submit" @else type="button" disabled @endif wire:loading.delay.long.attr="disabled"
                             type="submit" class="w-full text-white inline-flex items-center justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 disabled:bg-green-400 dark:disabled:bg-green-300 disabled:opacity-75">
                             <svg class="-ml-1 w-5 h-5 sm:mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                             Add shipment label
