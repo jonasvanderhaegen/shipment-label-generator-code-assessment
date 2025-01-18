@@ -10,13 +10,23 @@ jobs:
   laravel-tests:
     runs-on: ubuntu-latest
 
+    strategy:
+      max-parallel: 2
+      matrix:
+        php-versions: [8.2', '8.3']
+
+    name: PHP ${{ matrix.php-versions }}
+
     steps:
     - uses: actions/checkout@v4
 
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
+        php-version: ${{ matrix.php-version }}
+
+    - name: Update composer.json PHP platform version
+      run: composer config platform.php ${{ matrix.php-version }}
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
