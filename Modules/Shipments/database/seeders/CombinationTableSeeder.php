@@ -31,7 +31,7 @@ class CombinationTableSeeder extends Seeder
 
         foreach($combinations as $combination) {
 
-            if (in_array($combination['id'], [8, 9])) continue;
+            if (in_array($combination['id'], [14, 38])) continue;
 
             Combination::create([
                 'option_id' => $combination['id'],
