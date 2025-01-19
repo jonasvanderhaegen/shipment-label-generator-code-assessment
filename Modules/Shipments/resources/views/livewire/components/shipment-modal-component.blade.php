@@ -8,7 +8,7 @@
                 <!-- Modal header -->
                 <div class="flex justify-between items-center py-4 px-4 rounded-t sm:px-5" wire:loading.delay.long.class="opacity-20">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        @if($progression) Success! @else Generate Shipping Label @endif
+                        @if($progression) Success! @else {{ __('shipments::modal.title') }} @endif
                     </h3>
 
                     <div class="flex items-center space-x-2">
@@ -33,7 +33,7 @@
                 @if($progression)
 
                     <div class="mx-auto max-w-3xl space-y-6 sm:space-y-8 px-5 py-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Your file is ready for shipment @if (session()->has('order_number')) {{ session('order_number') }} @endif</h2>
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Your file is ready for shipment</h2>
 
                         {{-- TODO: STEPS FOR PROGRESS, low prio --}}
 
@@ -107,7 +107,7 @@
 
                         <h2 wire:loading.delay.long.class="opacity-20">
                             <button type="button" @if($form->isOrderInfoValid()) wire:click="toggleSection(1)" @else disabled @endif wire:loading.delay.long.attr="disabled" class="flex justify-between items-center py-4 px-4 w-full font-medium leading-none text-left text-gray-900 bg-gray-50 sm:px-5 dark:border-gray-700 dark:text-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-40">
-                                <span>Order Information</span>
+                                <span>{{__('shipments::modal.section1.title')}}</span>
                                 <svg data-accordion-icon="" class="w-6 h-6 {{ $openSection === 1 ? 'rotate-180' : '' }} shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             </button>
                         </h2>
@@ -115,121 +115,61 @@
                         <div {{ $openSection === 1 ? '' : 'hidden' }} wire:loading.delay.long.class="opacity-20">
                             <div class="p-8 border-gray-200 sm:p-5 dark:border-gray-700">
                                 <!-- Inputs -->
-                                <div class="grid gap-4 sm:grid-cols-2">
-                                    <div>
-                                        <label for="brand_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand id</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.brand_id" name="brand_id" id="brand_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        @error('form.brand_id')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                <div class="grid pt-6 gap-4 sm:grid-cols-2">
 
-                                    <div>
-                                        <label for="company id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company id</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.company_id" name="company_id" id="company_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        @error('form.company_id')
-                                            <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div>
-                                        <label for="order_number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Order number</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.order_number" name="order_number" id="order_number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        @error('form.order_number')
-                                            <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
-
+                                    <x-shipments::form.regular-text-component field="brand_id" label="form.brand_id" />
+                                    <x-shipments::form.regular-text-component field="company_id" label="form.company_id" />
+                                    <x-shipments::form.regular-text-component field="order_number" label="form.order_number" />
 
                                     <div class="col-span-2">
 
                                         <button
-                                        type="button"
-                                        @if($form->isOrderInfoValid()) wire:click="toggleSection(2)" @else disabled @endif
-                                        class="w-full text-white inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                            Continue to billing information
+                                            type="button"
+                                            @if($form->isOrderInfoValid()) wire:click="toggleSection(2)" @else disabled @endif
+                                            class="w-full text-white inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                            {{__('shipments::modal.section1.button')}}
                                         </button>
-
                                     </div>
 
                                 </div>
                             </div>
                         </div>
 
-                        <h2 wire:loading.delay.long.class="opacity-20">
-                        <button type="button" @if($form->isOrderInfoValid()) wire:click="toggleSection(2)" @else disabled @endif wire:loading.delay.long.attr="disabled" class="flex justify-between items-center py-4 px-4 w-full font-medium leading-none text-left text-gray-900 bg-blue-500 border-t border-gray-200 sm:px-5 dark:border-gray-700 dark:text-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-40">
-                            <span>Billing Information</span>
-                            <svg data-accordion-icon="" class="w-6 h-6 {{ $openSection === 2 ? 'rotate-180' : '' }} shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        </button>
 
+                        <h2 wire:loading.delay.long.class="opacity-20">
+                            <button type="button" @if($form->isOrderInfoValid()) wire:click="toggleSection(2)" @else disabled @endif wire:loading.delay.long.attr="disabled" class="flex justify-between items-center py-4 px-4 w-full font-medium leading-none text-left text-gray-900 bg-blue-500 border-t border-gray-200 sm:px-5 dark:border-gray-700 dark:text-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-40">
+                                <span>{{__('shipments::modal.section2.title')}}</span>
+                                <svg data-accordion-icon="" class="w-6 h-6 {{ $openSection === 2 ? 'rotate-180' : '' }} shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            </button>
                         </h2>
+
                         <div {{ $openSection === 2 ? '' : 'hidden' }} wire:loading.delay.long.class="opacity-20">
                             <div class="p-8 border-gray-200 sm:p-5 dark:border-gray-700">
-                                <div class="grid gap-4 sm:grid-cols-2">
-                                    <div class="col-span-2">
-                                        <label for="billing_company_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company name</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.billing_company_name" name="billing_company_name" id="billing_company_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="John Doe">
-                                        @error('form.billing_company_name')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                <div class="grid pt-6 gap-4 sm:grid-cols-2">
 
-                                    <div class="col-span-2">
-                                        <label for="billing_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full name</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.billing_name" name="billing_name" id="billing_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="John Doe">
-                                        @error('form.billing_name')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    <x-shipments::form.regular-text-component class="col-span-2" field="billing_company_name" label="form.company_name" />
+                                    <x-shipments::form.regular-text-component class="col-span-2" field="billing_name" label="form.name" />
+
+                                    <x-shipments::form.regular-text-component class="col-span-1" field="billing_street" label="form.street" />
+                                    <x-shipments::form.regular-text-component class="col-span-1 sm:col-span-1" field="billing_housenumber" label="form.housenumber" />
 
 
-                                    <div class="col-span-1">
-                                        <label for="billing_street" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.billing_street" name="billing_street" id="billing_street" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Jane Lane">
-                                        @error('form.billing_street')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    <x-shipments::form.regular-text-component class="col-span-1" field="billing_zipcode" label="form.zipcode" />
+                                    <x-shipments::form.regular-text-component class="col-span-1 sm:col-span-1" field="billing_city" label="form.city" />
 
-                                    <div class="col-span-1 sm:col-span-1">
-                                        <label for="billing_housenumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">House number</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.billing_housenumber" name="billing_housenumber" id="billing_housenumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="1">
-                                        @error('form.billing_housenumber')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
 
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label for="billing_zipcode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zipcode</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.billing_zipcode" name="billing_zipcode" id="billing_zipcode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="2000">
-                                        @error('form.billing_zipcode')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label for="billing_city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.billing_city" name="billing_city" id="billing_city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Antwerpen">
-                                        @error('form.billing_city')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-span-2">
-                                        <label for="billing_country" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                                        <select id="country" wire:model.live.debounce.200ms.fill="form.billing_country" wire:loading.delay.long.attr="disabled" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            @foreach ($countries as $country => $value)
-                                                <option wire:key="billing_{{$value}}" value="{{$value}}">{{$country}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    <x-shipments::form.select-component class="col-span-2" field="billing_country" label="form.country">
+                                        @foreach ($countries as $country => $value)
+                                            <option wire:key="delivery_{{$value}}" value="{{$value}}">{{$country}}</option>
+                                        @endforeach
+                                    </x-shipments::form.select-component>
 
                                     <div class="col-span-2">
                                         <button
                                         type="button"
                                         @if($form->isOrderInfoValid() && $form->isBillingValid()) wire:click="toggleSection(3)" @else disabled @endif
                                         class="w-full text-white inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                        Continue to shipping information
+                                        {{__('shipments::modal.section2.button')}}
                                         </button>
                                     </div>
                                 </div>
@@ -238,7 +178,7 @@
 
                         <h2 wire:loading.delay.long.class="opacity-20">
                             <button type="button" @if($form->isOrderInfoValid() && $form->isBillingValid()) wire:click="toggleSection(3)" @else disabled @endif wire:loading.delay.long.attr="disabled" class="flex justify-between items-center py-4 px-4 w-full font-medium leading-none text-left text-gray-900 bg-blue-500 border-t border-gray-200 sm:px-5 dark:border-gray-700 dark:text-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-40">
-                                <span>Shipping Information</span>
+                                <span>{{__('shipments::modal.section3.title')}}</span>
                                 <svg data-accordion-icon="" class="w-6 h-6 {{ $openSection === 3 ? 'rotate-180' : '' }} shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             </button>
                         </h2>
@@ -246,71 +186,30 @@
                         <div {{ $openSection === 3 ? '' : 'hidden' }} wire:loading.delay.long.class="opacity-20">
                             <div class="p-8 border-gray-200 sm:p-5 dark:border-gray-700">
                                 <!-- Inputs -->
-                                <div class="grid gap-4 sm:grid-cols-2">
+                                <div class="grid pt-6 gap-4 sm:grid-cols-2">
 
-                                    <div class="col-span-2">
-                                        <label for="delivery_company_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company name</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.delivery_company_name" name="delivery_company_name" id="delivery_company_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="John Doe">
-                                        @error('form.delivery_company_name')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    <x-shipments::form.regular-text-component class="col-span-2" field="delivery_company_name" label="form.company_name" />
+                                    <x-shipments::form.regular-text-component class="col-span-2" field="delivery_name" label="form.name" />
 
-                                    <div class="col-span-2">
-                                        <label for="delivery_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full name</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.delivery_name" name="delivery_name" id="delivery_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="John Doe">
-                                        @error('form.delivery_name')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    <x-shipments::form.regular-text-component class="col-span-1" field="delivery_street" label="form.street" />
+                                    <x-shipments::form.regular-text-component class="col-span-1 sm:col-span-1" field="delivery_housenumber" label="form.housenumber" />
 
-                                    <div class="col-span-1">
-                                        <label for="delivery_street" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.delivery_street" name="delivery_street" id="delivery_street" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Jane Lane">
-                                        @error('form.delivery_street')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
 
-                                    <div class="col-span-1 sm:col-span-1">
-                                        <label for="delivery_housenumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">House number</label>
-                                        <input type="number" wire:model.live.debounce.200ms="form.delivery_housenumber" name="delivery_housenumber" id="delivery_housenumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="1">
-                                        @error('form.delivery_housenumber')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                    <x-shipments::form.regular-text-component class="col-span-1" field="delivery_zipcode" label="form.zipcode" />
+                                    <x-shipments::form.regular-text-component class="col-span-1 sm:col-span-1" field="delivery_city" label="form.city" />
 
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label for="delivery_zipcode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zipcode</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.delivery_zipcode" name="delivery_zipcode" id="delivery_zipcode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="2000">
-                                        @error('form.delivery_zipcode')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label for="delivery_city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                                        <input type="text" wire:loading.delay.long.attr="disabled" wire:model.live.debounce.200ms="form.delivery_city" name="delivery_city" id="delivery_city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Antwerpen">
-                                        @error('form.delivery_city')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium"></span> {{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-span-2">
-                                        <label for="delivery_country" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                                        <select id="country" wire:model.live.debounce.200ms.fill="form.delivery_country" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            @foreach($countries as $fullCountryName => $value)
-                                                <option wire:key="delivery_{{$value}}" value="{{$value}}">{{$fullCountryName}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    <x-shipments::form.select-component class="col-span-2" field="delivery_country" label="form.country">
+                                        @foreach ($countries as $country => $value)
+                                            <option wire:key="delivery_{{$value}}" value="{{$value}}">{{$country}}</option>
+                                        @endforeach
+                                    </x-shipments::form.select-component>
 
                                     <div class="col-span-2">
                                         <button
                                         type="button"
                                         @if($form->isOrderInfoValid() && $form->isBillingValid() && $form->isDeliveryValid()) wire:click="toggleSection(4)" @else disabled @endif
                                         class="w-full text-white inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                        Continue to delivery method
+                                        {{__('shipments::modal.section3.button')}}
                                         </button>
                                     </div>
 
@@ -321,25 +220,18 @@
 
                         <h2 wire:loading.delay.long.class="opacity-20">
                             <button type="button" @if($form->isOrderInfoValid() && $form->isBillingValid() && $form->isDeliveryValid()) wire:click="toggleSection(4)" @else disabled @endif wire:loading.delay.long.attr="disabled" class="flex justify-between items-center py-4 px-4 w-full font-medium leading-none text-left text-gray-900 bg-blue-500 border-t border-gray-200 sm:px-5 dark:border-gray-700 dark:text-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-40">
-                                <span>Delivery methods</span>
+                                <span>{{__('shipments::modal.section4.title')}}</span>
                                 <svg data-accordion-icon="" class="w-6 h-6 {{ $openSection === 4 ? 'rotate-180' : '' }} shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             </button>
                         </h2>
 
                         <div {{ $openSection === 4 ? '' : 'hidden' }} wire:loading.delay.long.class="opacity-20">
                             <div class="p-8 border-gray-200 sm:p-5 dark:border-gray-700">
-                                <!-- Inputs -->
-                                <div class="grid gap-4 sm:grid-cols-2">
-
-                                    <div class="col-span-2">
-                                        <label for="product_combination_id" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose a delivery method</label>
-                                        <select id="product_combination_id" wire:model.live.debounce.200ms.fill="form.combination_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            @foreach($this->deliveryOptions() as $option)
-                                                <option wire:key="{{$option->id}}" value="{{$option->id}}">{{$option->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+                                <x-shipments::form.radio-list-component label="form.combination_id">
+                                    @foreach($this->deliveryOptions() as $option)
+                                        <x-shipments::form.radio wire:key="{{$option->id}}" field="combination_id" :value="$option->id" :name="$option->name" />
+                                    @endforeach
+                                </x-shipments::form.radio-list-component>
                             </div>
                         </div>
 
@@ -349,10 +241,10 @@
                         <button @if($form->isOrderInfoValid() && $form->isBillingValid() && $form->isDeliveryValid()) type="submit" @else type="button" disabled @endif wire:loading.delay.long.attr="disabled"
                             type="submit" class="w-full text-white inline-flex items-center justify-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 disabled:bg-green-400 dark:disabled:bg-green-300 disabled:opacity-75">
                             <svg class="-ml-1 w-5 h-5 sm:mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                            Add shipment label
+                            {{__('shipments::modal.buttons.submit')}}
                         </button>
                         <button wire:click="close" wire:loading.delay.long.attr="disabled" type="button" class="w-full inline-flex justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                            Discard
+                            {{__('shipments::modal.buttons.discard')}}
                         </button>
                     </div>
                 @endif
