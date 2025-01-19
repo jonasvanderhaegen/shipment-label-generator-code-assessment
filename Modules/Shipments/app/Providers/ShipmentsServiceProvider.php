@@ -116,8 +116,6 @@ class ShipmentsServiceProvider extends ServiceProvider
 
         $componentNamespace = $this->module_namespace($this->name, $this->app_path(config('modules.paths.generator.component-class.path')));
         Blade::componentNamespace($componentNamespace, $this->nameLower);
-
-        Blade::component('shipments::components.logo', 'logo');
     }
 
     /**

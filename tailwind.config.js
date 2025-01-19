@@ -5,10 +5,8 @@ export default {
     darkMode: 'class',
 
     content: [
-        './Modules/*/resources/views/*.blade.php',
-        './Modules/*/resources/views/*/*.blade.php',
-        './Modules/*/resources/views/livewire/*.blade.php',
-        './Modules/*/resources/views/livewire/*/*.blade.php',
+        './Modules/*/resources/views/**/*.blade.php',
+        './Modules/*/resources/views/livewire/**/*.blade.php',
         './Modules/*/resources/assets/sass/app.scss',
         './Modules/*/resources/assets/js/app.js',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',

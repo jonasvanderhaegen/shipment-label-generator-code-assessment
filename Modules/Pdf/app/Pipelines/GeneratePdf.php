@@ -15,8 +15,6 @@ class GeneratePdf
 {
     public function handle(Shipment $shipment, Closure $next)
     {
-        ray($shipment->combination);
-
         $name = Str::replace('#', '', $shipment->order_number); // Desired file name without extension
 
         $order_lines = [

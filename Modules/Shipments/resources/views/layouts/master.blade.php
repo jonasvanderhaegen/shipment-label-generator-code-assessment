@@ -24,7 +24,7 @@
 
 <body class="dark bg-gray-900">
 
-    <x-logo />
+    <x-shipments::logo />
 
     {{ $slot }}
     @livewireScripts
