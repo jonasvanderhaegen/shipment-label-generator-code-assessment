@@ -4,7 +4,7 @@ namespace Modules\Shipments\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Shipments\Database\Factories\CombinationFactory;
+use Modules\Shipments\Database\Factories\CombinationFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Combination extends Model
@@ -19,10 +19,10 @@ class Combination extends Model
         'name'
     ];
 
-    // protected static function newFactory(): CombinationFactory
-    // {
-    //     // return CombinationFactory::new();
-    // }
+    protected static function newFactory(): CombinationFactory
+    {
+        return CombinationFactory::new();
+    }
 
     public $timestamps = false;
 
