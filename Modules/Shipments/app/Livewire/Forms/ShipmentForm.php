@@ -66,7 +66,7 @@ class ShipmentForm extends Form
     #[Validate('required|string')]
     public string $delivery_country = '';
 
-    #[Validate('integer')]
+    #[Validate('required|integer')]
     public int $combination_id = 1;
 
     #[Computed]

@@ -4,7 +4,7 @@ namespace Modules\Shipments\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Shipments\Database\Factories\ShipmentLabelFactory;
+use Modules\Shipments\Database\Factories\ShipmentFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Shipment extends Model
@@ -15,6 +15,11 @@ class Shipment extends Model
         'id', // Assuming 'id' is the primary key and should not be mass assignable
         // Add any other attributes you want to guard
     ];
+
+    protected static function newFactory(): ShipmentFactory
+    {
+        return ShipmentFactory::new();
+    }
 
     /**
      * The attributes that are mass assignable.
