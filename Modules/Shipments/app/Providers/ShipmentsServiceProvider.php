@@ -4,12 +4,11 @@ namespace Modules\Shipments\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Shipments\Models\Shipment;
+use Modules\Shipments\Observers\ShipmentObserver;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-
-use Modules\Shipments\Models\Shipment;
-use Modules\Shipments\Observers\ShipmentObserver;
 
 class ShipmentsServiceProvider extends ServiceProvider
 {
@@ -91,8 +90,8 @@ class ShipmentsServiceProvider extends ServiceProvider
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $relativePath = str_replace($configPath . DIRECTORY_SEPARATOR, '', $file->getPathname());
-                    $configKey = $this->nameLower . '.' . str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $relativePath);
+                    $relativePath = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
+                    $configKey = $this->nameLower.'.'.str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $relativePath);
                     $key = ($relativePath === 'config.php') ? $this->nameLower : $configKey;
 
                     $this->publishes([$file->getPathname() => config_path($relativePath)], 'config');
@@ -120,12 +119,19 @@ class ShipmentsServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+     *
+     * @return array<int, string>
      */
     public function provides(): array
     {
         return [];
     }
 
+    /**
+     * Get the publishable view paths.
+     *
+     * @return array<int, string>
+     */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

@@ -2,9 +2,9 @@
 
 namespace Modules\Shipments\Livewire\Forms;
 
-use Livewire\Form;
-use Livewire\Attributes\Validate;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Validate;
+use Livewire\Form;
 use Modules\Shipments\Models\Shipment;
 
 class ShipmentForm extends Form
@@ -70,38 +70,37 @@ class ShipmentForm extends Form
     public int $combination_id = 1;
 
     #[Computed]
-    public function isOrderInfoValid()
+    public function isOrderInfoValid(): bool
     {
-        return !empty($this->brand_id)
-        && !empty($this->company_id)
-        && !empty($this->order_number)
-        && !$this->getErrorBag()->any();
+        return ! empty($this->brand_id)
+        && ! empty($this->company_id)
+        && ! empty($this->order_number)
+        && ! $this->getErrorBag()->any();
     }
 
     #[Computed]
-    public function isBillingValid()
+    public function isBillingValid(): bool
     {
-        return !empty($this->billing_name)
-        && !empty($this->billing_street)
-        && !empty($this->billing_housenumber)
-        && !empty($this->billing_zipcode)
-        && !empty($this->billing_city)
-        && !empty($this->billing_country)
-        && !$this->getErrorBag()->any();
+        return ! empty($this->billing_name)
+        && ! empty($this->billing_street)
+        && ! empty($this->billing_housenumber)
+        && ! empty($this->billing_zipcode)
+        && ! empty($this->billing_city)
+        && ! empty($this->billing_country)
+        && ! $this->getErrorBag()->any();
     }
 
     #[Computed]
-    public function isDeliveryValid()
+    public function isDeliveryValid(): bool
     {
-        return !empty($this->delivery_name)
-        && !empty($this->delivery_street)
-        && !empty($this->delivery_housenumber)
-        && !empty($this->delivery_zipcode)
-        && !empty($this->delivery_city)
-        && !empty($this->delivery_country)
-        && !$this->getErrorBag()->any();
+        return ! empty($this->delivery_name)
+        && ! empty($this->delivery_street)
+        && ! empty($this->delivery_housenumber)
+        && ! empty($this->delivery_zipcode)
+        && ! empty($this->delivery_city)
+        && ! empty($this->delivery_country)
+        && ! $this->getErrorBag()->any();
     }
-
 
     // Methode om de verzending op te slaan
     public function store(): void

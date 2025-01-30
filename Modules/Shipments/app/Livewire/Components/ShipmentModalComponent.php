@@ -2,36 +2,39 @@
 
 namespace Modules\Shipments\Livewire\Components;
 
-use Livewire\Component;
-
-use Modules\Shipments\Livewire\Forms\ShipmentForm;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Isolate;
-use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Modules\Shipments\Livewire\Forms\ShipmentForm;
 use Modules\Shipments\Models\Combination;
-
 use Modules\Shipments\Models\Shipment;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 #[Isolate]
 class ShipmentModalComponent extends Component
 {
     public ShipmentForm $form;
 
-    public $openSection;
+    public ?int $openSection = null;
 
-    public array $countries;
+    /** @var array<string, string> */
+    public array $countries = [];
 
     public bool $progression = false;
 
+    /** @var array<int, Combination> */
     public array $deliveryOptions = [];
 
+    /** @var array<string, string> */
     protected $listeners = [
         'toggleProgressionFromChild' => 'toggleProgressionOnParent',
-        'downloadFromChild' => 'downloadOnParent'
+        'downloadFromChild' => 'downloadOnParent',
     ];
 
-
-    public function downloadOnParent()
+    public function downloadOnParent(): BinaryFileResponse
     {
         $shipment = Shipment::latest()->first();
 
@@ -41,18 +44,17 @@ class ShipmentModalComponent extends Component
         );
     }
 
-
-    public function toggleSection($section)
+    public function toggleSection(int $section): void
     {
         $this->openSection = $this->openSection === $section ? null : $section;
     }
 
-    public function fillFieldsWithFakeData()
+    public function fillFieldsWithFakeData(): void
     {
-        $this->form->order_number =  '#' . fake()->bothify('#######');
+        $this->form->order_number = '#'.fake()->bothify('#######');
         $this->form->billing_company_name = $this->form->delivery_company_name = fake('nl_NL')->company();
         $this->form->billing_name = $this->form->delivery_name = fake('nl_NL')->name();
-        $this->form->billing_street = fake()->streetName('nl_NL');
+        $this->form->billing_street = fake('nl_NL')->streetName();
         $this->form->billing_housenumber = (string) fake('nl_NL')->buildingNumber();
         $this->form->billing_zipcode = fake('nl_NL')->postcode();
         $this->form->billing_city = fake('nl_NL')->city();
@@ -63,18 +65,18 @@ class ShipmentModalComponent extends Component
         $this->form->delivery_city = 'Dordrecht';
     }
 
-    public function toggleProgressionOnParent()
+    public function toggleProgressionOnParent(): void
     {
-        $this->progression = !$this->progression;
+        $this->progression = ! $this->progression;
     }
 
-    public function close()
+    public function close(): void
     {
         $this->dispatch('closeModal');
         $this->toggleProgressionOnParent();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->countries = [
             'Netherlands' => 'NL',
@@ -85,23 +87,24 @@ class ShipmentModalComponent extends Component
         $this->form->brand_id = config('shipments.id.brand');
 
         $this->form->company_id = config('shipments.id.company');
-
     }
 
+    /**
+     * @return Collection<int, Combination>
+     */
     #[Computed(persist: true, seconds: 3600)]
-    public function deliveryOptions()
+    public function deliveryOptions(): Collection
     {
         return Combination::all();
     }
 
-    public function save()
+    public function save(): void
     {
         $this->form->store();
     }
 
-    public function render()
+    public function render(): View
     {
-        return view('shipments::livewire.components.shipment-modal-component'
-        );
+        return view('shipments::livewire.components.shipment-modal-component');
     }
 }

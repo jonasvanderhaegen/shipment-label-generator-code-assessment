@@ -3,19 +3,17 @@
 namespace Modules\Pdf\Console;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-
 use Illuminate\Pipeline\Pipeline;
-
-use Modules\Shipments\Pipelines\FetchShipmentData;
-use Modules\Pdf\Pipelines\FetchShippingLabel;
-use Modules\Pdf\Pipelines\StoreTemporaryPdf;
-use Modules\Pdf\Pipelines\GeneratePdf;
-use Modules\Pdf\Pipelines\ConcatenatePdfs;
 use Modules\Pdf\Pipelines\CleanUpTemporaryFiles;
+use Modules\Pdf\Pipelines\ConcatenatePdfs;
+use Modules\Pdf\Pipelines\FetchShippingLabel;
+use Modules\Pdf\Pipelines\GeneratePdf;
+use Modules\Pdf\Pipelines\StoreTemporaryPdf;
 use Modules\Shipments\Models\Shipment;
+use Modules\Shipments\Pipelines\FetchShipmentData;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class TestGeneratePdfPipeline extends Command implements PromptsForMissingInput
 {
@@ -35,47 +33,53 @@ class TestGeneratePdfPipeline extends Command implements PromptsForMissingInput
     public function __construct(
         private Pipeline $pipeline,
         private Shipment $shipment
-    )
-    {
+    ) {
         parent::__construct();
     }
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    /**
+     * Execute the console command.
+     */
+    public function handle(): void
     {
         $shipmentId = $this->argument('shipment');
 
         // Validate that the shipmentId is a number
-        if (!is_numeric($shipmentId)) {
+        if (! is_numeric($shipmentId)) {
             $this->error('The shipmentId must be a valid number.');
-            return 1; // Exit with error
+
+            return; // Exit with error
         }
 
         $shipment = $this->shipment->find($shipmentId);
 
-        if (!$shipment) {
+        if (! $shipment) {
             $this->error("Shipment with ID {$shipmentId} not found.");
-            return 1; // Error exit code
+
+            return; // Error exit code
         }
 
         $this->info("Processing shipment in pipeline: shipment with ID {$shipment->id}");
 
         $this->pipeline->send($shipment)
-        ->through([
-            // FetchShipmentData::class,
-            FetchShippingLabel::class,
-            StoreTemporaryPdf::class,
-            GeneratePdf::class,
-            ConcatenatePdfs::class,
-            CleanUpTemporaryFiles::class
-        ])
-        ->thenReturn();
+            ->through([
+                // FetchShipmentData::class,
+                FetchShippingLabel::class,
+                StoreTemporaryPdf::class,
+                GeneratePdf::class,
+                ConcatenatePdfs::class,
+                CleanUpTemporaryFiles::class,
+            ])
+            ->thenReturn();
     }
 
     /**
      * Get the console command arguments.
+     *
+     * @return array<int, array{string, int, string}>
      */
     protected function getArguments(): array
     {
@@ -86,6 +90,8 @@ class TestGeneratePdfPipeline extends Command implements PromptsForMissingInput
 
     /**
      * Get the console command options.
+     *
+     * @return array<int, array{string, string|null, int, string, mixed}>
      */
     protected function getOptions(): array
     {

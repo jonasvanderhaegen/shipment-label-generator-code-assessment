@@ -5,20 +5,19 @@ namespace Modules\Pdf\Pipelines;
 use Closure;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-
 use Modules\Shipments\Models\Shipment;
 
 class FetchShippingLabel
 {
-    public function handle(Shipment $shipment, Closure $next)
+    public function handle(Shipment $shipment, Closure $next): Closure
     {
         try {
 
             $response = Http::withBasicAuth(config('shipments.api.username'), config('shipments.api.password'))
-            ->get( $shipment->api_label_pdf_url );
+                ->get($shipment->api_label_pdf_url);
 
             if ($response->failed()) {
-                throw new \Exception('Failed to fetch shipment label: ' . $response->body());
+                throw new \Exception('Failed to fetch shipment label: '.$response->body());
             }
 
             $shipment->base64String = $response->json('data');

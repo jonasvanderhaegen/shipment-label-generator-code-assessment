@@ -3,18 +3,15 @@
 namespace Modules\Pdf\Pipelines;
 
 use Closure;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
-use Modules\Shipments\Models\Shipment;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Modules\Shipments\Models\Shipment;
 
 class CleanUpTemporaryFiles
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
-    public function handle(Shipment $shipment, Closure $next)
+    public function handle(Shipment $shipment, Closure $next): Closure
     {
         $name = Str::replace('#', '', $shipment->order_number);
 
