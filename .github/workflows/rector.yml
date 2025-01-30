@@ -36,8 +36,8 @@ jobs:
           restore-keys: ${{ runner.os }}-rector-
 
       - name: Run Rector
-        run: vendor/bin/rector process --ansi --dry-run
-        continue-on-error: true # Allow it to continue for reporting
+        run: vendor/bin/rector process --ansi --dry-run --no-diffs
+        # continue-on-error: true # Allow it to continue for reporting
 
       - name: Auto-fix Rector Changes (Optional)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
