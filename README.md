@@ -5,6 +5,8 @@
 
 [Pdf outputs](/examples/pdfs) | [Screenshots](/examples/screenshots)
 
+do not use this for production, this was a code assessment for a job.
+
 This was quite a fun code assessment to do, I enjoyed programming this mostly with Laravel and Livewire. 
 
 The only thing that bothered me is that the full page components update the whole page with very action, it detaches flowbite's javascript, which is why I've to remove Flowbite's html properties and replace with livewire variables and php logic so it persists when doing click actions that update the components. For example the accordeon was with javascript, but everytime I start to type in a field it updates the whole modal component and resets the DOM elements to its original start and detach Flowbite javascript, it doesn't anything anymore after.
@@ -18,7 +20,9 @@ For combining the label and order information I initially thought to resize the 
 - ~~Submitting modal form currently shows no indication of loading/processing until it's finished;~~
 
 ## Work in progress
-
+- Add linter php pint github workflow;
+- Add rector github workflow;
+- Add phpstan github workflow;
 - Write pest tests;
 - Deal with errors from api more gracefully;
 - Add more meaningful typing;
