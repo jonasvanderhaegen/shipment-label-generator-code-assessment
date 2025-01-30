@@ -5,13 +5,11 @@ namespace Modules\Shipments\Pipelines;
 use Closure;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-
 use Modules\Shipments\Models\Shipment;
 
 class FetchShipmentData
 {
-    public function handle(Shipment $shipment, Closure $next)
+    public function handle(Shipment $shipment, Closure $next): Closure
     {
         try {
             // Log initial request for debugging
@@ -33,25 +31,25 @@ class FetchShipmentData
                 ],
                 'shipment_products' => [
                     [
-                        'amount' => "2",
+                        'amount' => '2',
                         'name' => 'Jeans - Black - 36',
-                        'sku' => "69205",
-                        'ean' =>  '8710552295268',
+                        'sku' => '69205',
+                        'ean' => '8710552295268',
                     ],
                     [
-                        'amount' => "1",
+                        'amount' => '1',
                         'name' => 'Sjaal - Rood Oranje',
-                        'sku' => "25920",
-                        'ean' =>  '3059943009097',
-                    ]
-                ]
+                        'sku' => '25920',
+                        'ean' => '3059943009097',
+                    ],
+                ],
             ];
 
             $response = Http::withBasicAuth(config('shipments.api.username'), config('shipments.api.password'))
-            ->post(config('shipments.api.url') . "companies/{$shipment->company_id}/shipments", $data);
+                ->post(config('shipments.api.url')."companies/{$shipment->company_id}/shipments", $data);
 
             if ($response->failed()) {
-                throw new \Exception('Failed to create shipment: ' . $response->body());
+                throw new \Exception('Failed to create shipment: '.$response->body());
             }
 
             $data = $response->json('data');
@@ -60,7 +58,7 @@ class FetchShipmentData
                 'api_shipment_id' => $data['id'],
                 'api_tracking_id' => $data['tracking_id'],
                 'api_tracking_url' => $data['tracking_url'],
-                'api_label_pdf_url' => $data['label_pdf_url']
+                'api_label_pdf_url' => $data['label_pdf_url'],
             ]);
 
             return $next($shipment);

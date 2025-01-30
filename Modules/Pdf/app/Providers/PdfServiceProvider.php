@@ -4,11 +4,10 @@ namespace Modules\Pdf\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Pdf\Console\TestGeneratePdfPipeline;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-
-use Modules\Pdf\Console\TestGeneratePdfPipeline;
 
 class PdfServiceProvider extends ServiceProvider
 {
@@ -17,7 +16,6 @@ class PdfServiceProvider extends ServiceProvider
     protected string $name = 'Pdf';
 
     protected string $nameLower = 'pdf';
-
 
     /**
      * Boot the application events.
@@ -47,7 +45,7 @@ class PdfServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
-            TestGeneratePdfPipeline::class
+            TestGeneratePdfPipeline::class,
         ]);
     }
 
@@ -91,8 +89,8 @@ class PdfServiceProvider extends ServiceProvider
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $relativePath = str_replace($configPath . DIRECTORY_SEPARATOR, '', $file->getPathname());
-                    $configKey = $this->nameLower . '.' . str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $relativePath);
+                    $relativePath = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
+                    $configKey = $this->nameLower.'.'.str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $relativePath);
                     $key = ($relativePath === 'config.php') ? $this->nameLower : $configKey;
 
                     $this->publishes([$file->getPathname() => config_path($relativePath)], 'config');
@@ -120,12 +118,19 @@ class PdfServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
+     *
+     * @return array<int, string>
      */
     public function provides(): array
     {
         return [];
     }
 
+    /**
+     * Get the publishable view paths.
+     *
+     * @return array<int, string>
+     */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

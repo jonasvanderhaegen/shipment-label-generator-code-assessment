@@ -2,27 +2,27 @@
 
 namespace Modules\Shipments\Livewire\Components;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Validate;
-use Livewire\Attributes\Url;
+use Illuminate\View\View;
 use Livewire\Attributes\Isolate;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
+use Livewire\Component;
 
 #[Isolate]
 class SearchComponent extends Component
 {
     #[Url(as: 'q', except: '', history: true)]
-    public $searchText = "";
+    public string $searchText = '';
 
-    public $placeholder;
+    public ?string $placeholder;
 
     #[On('search:clear-results')]
-    public function clear()
+    public function clear(): void
     {
         $this->reset('searchText');
     }
 
-    public function render()
+    public function render(): View
     {
         return view('shipments::livewire.components.search-component');
     }

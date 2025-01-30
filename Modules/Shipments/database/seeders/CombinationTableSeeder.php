@@ -3,9 +3,9 @@
 namespace Modules\Shipments\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Shipments\Models\Combination;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
+use Modules\Shipments\Models\Combination;
 
 class CombinationTableSeeder extends Seeder
 {
@@ -17,25 +17,29 @@ class CombinationTableSeeder extends Seeder
         $company = config('shipments.id.company');
 
         $response = Http::withBasicAuth(config('shipments.api.username'), config('shipments.api.password'))
-        ->get(config('shipments.api.url_old') . "companies/{$company}/products");
+            ->get(config('shipments.api.url_old')."companies/{$company}/products");
 
-        if($response->failed()) return;
+        if ($response->failed()) {
+            return;
+        }
 
+        /** @var array<int, array<string, mixed>> $data */
         $data = $response->json('data');
 
-        $combinations = collect($data)
-        ->flatMap(function ($item) {
-            return $item['combinations'];
-        })
-        ->all();
+        /** @var Collection<int, array<string, mixed>> $collection */
+        $collection = collect($data);
 
-        foreach($combinations as $combination) {
+        /** @var array<int, array<string, mixed>> $combinations */
+        $combinations = $collection->flatMap(fn (array $item): array => $item['combinations'])->all();
 
-            if (in_array($combination['id'], [14, 38])) continue;
+        foreach ($combinations as $combination) {
+            if (in_array($combination['id'], [14, 38], true)) {
+                continue;
+            }
 
             Combination::create([
                 'option_id' => $combination['id'],
-                'name' => $combination['name']
+                'name' => $combination['name'],
             ]);
         }
     }

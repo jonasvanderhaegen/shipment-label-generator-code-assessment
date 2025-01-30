@@ -1,0 +1,83 @@
+name:  Pest (tests in laravel)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      max-parallel: 3
+      matrix:
+        php: [8.2,8.3,8.4]
+
+    services:
+      redis:
+        image: redis:7.4
+        ports:
+          - 6379:6379
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: laravel
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
+    name: Test with PHP ${{ matrix.php }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Setup PHP Environment
+        uses: ./.github/actions/setup
+        with:
+          php-version: ${{ matrix.php }}
+          # coverage: xdebug
+
+      - name: Install Project Dependencies
+        run: composer install -q --no-interaction --no-progress
+
+      - name: Install Node.js Dependencies
+        run: npm install
+
+      - name: Build Assets
+        run: npm run build
+
+      - name: Copy Environment File
+        run: cp .env.example .env
+
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      - name: Run Database Migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: laravel
+        run: php artisan migrate --force
+
+      - name: Seed Database
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: laravel
+        run: php artisan db:seed --force
+
+      - name: Run Tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: laravel
+        run: php artisan test
