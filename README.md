@@ -5,7 +5,7 @@
 
 [Pdf outputs](/examples/pdfs) | [Screenshots](/examples/screenshots)
 
-do not use this for production, this was a code assessment for a job.
+do not use this for production, this was a code assessment for a job. I spent about 1.5h day to deliver a version that works. In my spare time I sometimes continue working on this just as hobby.
 
 This was quite a fun code assessment to do, I enjoyed programming this mostly with Laravel and Livewire. 
 
